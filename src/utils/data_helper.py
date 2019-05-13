@@ -335,8 +335,8 @@ class AmazonPreprocessor:
         # ! hstack is deprecated
         X_test_filename = np.hstack(([name.split(".")[0] for name in files_name],
                                      [name.split(".")[0] for name in files_name_add]))
-        X_test_file_path = np.hstack(([self.test_jpeg_dir + "/" + name for name in files_name],
-                                      [self.test_additional_jpeg_dir + "/" + name for name in files_name_add]))
+        X_test_file_path = np.hstack(([self.test_jpeg_dir / name for name in files_name],
+                                      [self.test_additional_jpeg_dir / name for name in files_name_add]))
         return X_test_filename, X_test_file_path
 
 

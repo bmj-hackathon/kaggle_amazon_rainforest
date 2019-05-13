@@ -120,7 +120,7 @@ assert train_csv_file.exists()
 
 # %%
 
-train_jpeg_dir, test_jpeg_dir, test_jpeg_additional, train_csv_file = data_helper.get_jpeg_data_files_paths()
+# train_jpeg_dir, test_jpeg_dir, test_jpeg_additional, train_csv_file = data_helper.get_jpeg_data_files_paths()
 labels_df = pd.read_csv(train_csv_file)
 labels_df.head()
 
@@ -146,7 +146,7 @@ print("There is {} unique labels including {}".format(len(labels_set), labels_se
 labels_s = pd.Series(labels_list).value_counts() # To sort them by count
 fig, ax = plt.subplots(figsize=(16, 8))
 sns.barplot(x=labels_s, y=labels_s.index, orient='h')
-
+plt.show()
 # %% [markdown]
 
 # ## Images
@@ -163,9 +163,10 @@ _, axs = plt.subplots(5, 4, sharex='col', sharey='row', figsize=(15, 20))
 axs = axs.ravel()
 
 for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
-    img = mpimg.imread(train_jpeg_dir + '/' + image_name)
+    img = mpimg.imread(train_jpeg_dir / image_name)
     axs[i].imshow(img)
     axs[i].set_title('{} - {}'.format(image_name, label))
+plt.show()
 
 # %% [markdown]
 
@@ -184,13 +185,13 @@ validation_split_size = 0.2
 # %% [markdown]
 
 # # Data preprocessing
-# Due to the hudge amount of memory the preprocessed images can take, we will create a dedicated `AmazonPreprocessor` class which job is to preprocess the data right in time at specific steps (training/inference) so that our RAM don't get completely filled by the preprocessed images.
+# Due to the huge amount of memory the preprocessed images can take, we will create a dedicated `AmazonPreprocessor` class which job is to preprocess the data right in time at specific steps (training/inference) so that our RAM don't get completely filled by the preprocessed images.
 #
 # The only exception to this being the validation dataset as we need to use it as-is for f2 score calculation as well as when we calculate the validation accuracy of each batch.
 
 # %%
 
-preprocessor = AmazonPreprocessor(train_jpeg_dir, train_csv_file, test_jpeg_dir, test_jpeg_additional,
+preprocessor = AmazonPreprocessor(train_jpeg_dir, train_csv_file, test_jpeg_dir, test_jpeg_additional_dir,
                                   img_resize, validation_split_size)
 preprocessor.init()
 
