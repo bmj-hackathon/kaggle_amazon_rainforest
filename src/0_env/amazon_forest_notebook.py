@@ -230,7 +230,7 @@ callbacks = [history,
 X_train, y_train = preprocessor.X_train, preprocessor.y_train
 X_val, y_val = preprocessor.X_val, preprocessor.y_val
 
-batch_size = 128
+batch_size = 64
 train_generator = preprocessor.get_train_generator(batch_size)
 steps = len(X_train) / batch_size
 
