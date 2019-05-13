@@ -80,30 +80,38 @@ tf.__version__
 
 # %%
 
-competition_name = "planet-understanding-the-amazon-from-space"
-
-train, train_u = "train-jpg.tar.7z", "train-jpg.tar"
-test, test_u = "test-jpg.tar.7z", "test-jpg.tar"
-test_additional, test_additional_u = "test-jpg-additional.tar.7z", "test-jpg-additional.tar"
-test_labels = "train_v2.csv.zip"
-destination_path = "../input/"
-is_datasets_present = False
-
-# If the folders already exists then the files may already be extracted
-# This is a bit hacky but it's sufficient for our needs
-datasets_path = data_helper.get_jpeg_data_files_paths()
-for dir_path in datasets_path:
-    if os.path.exists(dir_path):
-        is_datasets_present = True
+# competition_name = "planet-understanding-the-amazon-from-space"
+#
+# train, train_u = "train-jpg.tar.7z", "train-jpg.tar"
+# test, test_u = "test-jpg.tar.7z", "test-jpg.tar"
+# test_additional, test_additional_u = "test-jpg-additional.tar.7z", "test-jpg-additional.tar"
+# test_labels = "train_v2.csv.zip"
+# destination_path = "../input/"
+# is_datasets_present = False
+#
+# # If the folders already exists then the files may already be extracted
+# # This is a bit hacky but it's sufficient for our needs
+# datasets_path = data_helper.get_jpeg_data_files_paths()
+# for dir_path in datasets_path:
+#     if os.path.exists(dir_path):
+#         is_datasets_present = True
 
 # %%
-data_root_folder = Path.cwd() / ''
-data_root_folder = os.path.abspath("../input/")
-train_jpeg_dir = os.path.join(data_root_folder, 'train-jpg')
-test_jpeg_dir = os.path.join(data_root_folder, 'test-jpg')
-test_jpeg_additional = os.path.join(data_root_folder, 'test-jpg-additional')
-train_csv_file = os.path.join(data_root_folder, 'train_v2.csv')
-return [train_jpeg_dir, test_jpeg_dir, test_jpeg_additional, train_csv_file]
+data_root_folder = Path.cwd() / 'data'
+assert data_root_folder.exists()
+train_jpeg_dir = data_root_folder / 'train-jpg'
+assert train_jpeg_dir.exists()
+test_jpeg_dir = data_root_folder / 'test-jpg'
+assert test_jpeg_dir.exists()
+test_jpeg_additional_dir = data_root_folder / 'test-jpg-additional'
+assert test_jpeg_additional_dir.exists()
+train_csv_file = data_root_folder / 'train_v2.csv'
+assert train_csv_file.exists()
+# train_jpeg_dir = os.path.join(data_root_folder, 'train-jpg')
+# test_jpeg_dir = os.path.join(data_root_folder, 'test-jpg')
+# test_jpeg_additional = os.path.join(data_root_folder, 'test-jpg-additional')
+# train_csv_file = os.path.join(data_root_folder, 'train_v2.csv')
+# return [train_jpeg_dir, test_jpeg_dir, test_jpeg_additional, train_csv_file]
 
 # %% [markdown]
 
