@@ -19,7 +19,7 @@
 # %%
 
 # import sys
-# from pathlib import Path
+from pathlib import Path
 # PATH_UTILS_MODULE = Path.cwd() / 'src/utils'
 # PATH_UTILS_MODULE = Path.cwd() / 'src'
 # PATH_UTILS_MODULE.exists()
@@ -96,33 +96,14 @@ for dir_path in datasets_path:
     if os.path.exists(dir_path):
         is_datasets_present = True
 
-if not is_datasets_present:
-    # Put your Kaggle user name and password in a $KAGGLE_USER and $KAGGLE_PASSWD env vars respectively
-    downloader = KaggleDataDownloader(os.getenv("KAGGLE_USER"), os.getenv("KAGGLE_PASSWD"), competition_name)
-
-    train_output_path = downloader.download_dataset(train, destination_path)
-    downloader.decompress(train_output_path, destination_path) # Outputs a tar file
-    downloader.decompress(destination_path + train_u, destination_path) # Extract the content of the previous tar file
-    os.remove(train_output_path) # Removes the 7z file
-    os.remove(destination_path + train_u) # Removes the tar file
-
-    test_output_path = downloader.download_dataset(test, destination_path)
-    downloader.decompress(test_output_path, destination_path) # Outputs a tar file
-    downloader.decompress(destination_path + test_u, destination_path) # Extract the content of the previous tar file
-    os.remove(test_output_path) # Removes the 7z file
-    os.remove(destination_path + test_u) # Removes the tar file
-
-    test_add_output_path = downloader.download_dataset(test_additional, destination_path)
-    downloader.decompress(test_add_output_path, destination_path) # Outputs a tar file
-    downloader.decompress(destination_path + test_additional_u, destination_path) # Extract the content of the previous tar file
-    os.remove(test_add_output_path) # Removes the 7z file
-    os.remove(destination_path + test_additional_u) # Removes the tar file
-
-    test_labels_output_path = downloader.download_dataset(test_labels, destination_path)
-    downloader.decompress(test_labels_output_path, destination_path) # Outputs a csv file
-    os.remove(test_labels_output_path) # Removes the zip file
-else:
-    print("All datasets are present.")
+# %%
+data_root_folder = Path.cwd() / ''
+data_root_folder = os.path.abspath("../input/")
+train_jpeg_dir = os.path.join(data_root_folder, 'train-jpg')
+test_jpeg_dir = os.path.join(data_root_folder, 'test-jpg')
+test_jpeg_additional = os.path.join(data_root_folder, 'test-jpg-additional')
+train_csv_file = os.path.join(data_root_folder, 'train_v2.csv')
+return [train_jpeg_dir, test_jpeg_dir, test_jpeg_additional, train_csv_file]
 
 # %% [markdown]
 
