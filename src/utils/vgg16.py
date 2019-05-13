@@ -1,8 +1,8 @@
 import numpy as np
-from keras.applications.vgg16 import VGG16
-from keras.models import Model
-from keras.layers import Dense, Input, Flatten, Dropout
-from keras.layers.normalization import BatchNormalization
+from tensorflow.python.keras.applications.vgg16 import VGG16
+from tensorflow.python.keras.models import Model
+from tensorflow.python.keras.layers import Dense, Input, Flatten, Dropout
+from tensorflow.python.keras.layers.normalization import BatchNormalization
 from sklearn.metrics import fbeta_score
 
 def create_model(img_dim=(128, 128, 3)):

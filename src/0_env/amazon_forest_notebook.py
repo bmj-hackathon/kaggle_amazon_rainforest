@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# <nbformat>4</nbformat>
 
 # %% [markdown]
 
@@ -19,13 +18,15 @@
 
 # %%
 
-import sys
-from pathlib import Path
-PATH_UTILS_MODULE = Path('./src/utils')
-PATH_UTILS_MODULE.exists()
-sys.path.append(PATH_UTILS_MODULE)
-# sys.path.append('../tests')
-
+# import sys
+# from pathlib import Path
+# PATH_UTILS_MODULE = Path.cwd() / 'src/utils'
+# PATH_UTILS_MODULE = Path.cwd() / 'src'
+# PATH_UTILS_MODULE.exists()
+# sys.path.append(PATH_UTILS_MODULE)
+# # sys.path.append('../tests')
+# for p in sys.path:
+#     print(p)
 # %% [markdown]
 
 # ## Import required modules
@@ -33,23 +34,36 @@ sys.path.append(PATH_UTILS_MODULE)
 # %%
 
 import os
-import gc
-import bcolz
-import numpy as np
+# import gc
+# import bcolz
+# import numpy as np
 import pandas as pd
 import seaborn as sns
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-from keras.optimizers import Adam
-from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, History
-import vgg16
-import data_helper
-from data_helper import AmazonPreprocessor
-from kaggle_data.downloader import KaggleDataDownloader
+from tensorflow.python.keras.optimizers import Adam
+# from keras.optimizers import Adam
+from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, History
+# from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, History
+# import vgg16
+# from utils import vgg16
+# from . import utils
+# from .. import utils
+# import .utils
+# from  .utils import vgg16
+# from utils import vgg16
+# import vgg16
+# import data_helper
 
-%matplotlib inline
-%config InlineBackend.figure_format = 'retina'
+from src.utils import vgg16
+from src.utils import data_helper
+from src.utils.data_helper import AmazonPreprocessor
+# from kaggle_data.downloader import KaggleDataDownloader
+
+
+# %matplotlib inline
+# %config InlineBackend.figure_format = 'retina'
 
 # %% [markdown]
 
