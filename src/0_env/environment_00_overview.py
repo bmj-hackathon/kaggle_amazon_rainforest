@@ -11,6 +11,7 @@
 # <p><a href="https://github.com/oceanprotocol/mantaray">mantaray on Github</a></p>
 # <p>
 
+# -------------------
 
 # %% [markdown]
 # # Decentralized Data Science use case - Understanding the Amazon deforestation from Space challenge
@@ -34,7 +35,7 @@
 # - Various formatting and comments
 #
 # Below, the kernel;
-
+# -------------------
 # %% [markdown]
 #
 # Special thanks to the kernel contributors of this challenge (especially @anokas and @Kaggoo) who helped me find a starting point for this notebook.

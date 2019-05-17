@@ -79,7 +79,7 @@ logging.info("Wrote {}".format(path_kernel_script_out))
 
 #%% Convert to notebook
 # Parse the script to Jupyter format
-parsed = jupytext.reads("".join(script_lines), ext='.py', format_name='percent')
+parsed = jupytext.reads("".join(script_lines),  fmt='py')
 
 # Delete the file if it exists
 # if out_path.exists():
