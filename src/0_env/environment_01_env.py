@@ -68,6 +68,20 @@ import tensorflow.keras as ks
 logging.info("{:>10}=={} as {}".format('tensorflow', tf.__version__, 'tf'))
 logging.info("{:>10}=={} as {}".format('keras', ks.__version__, 'ks'))
 
+# %% [markdown]
+# Currently, this example supports tensorflow GPU 0.12.
+
+# %%
+from tensorflow.python.client import device_lib
+
+def get_available_gpus():
+    local_device_protos = device_lib.list_local_devices()
+    return [x.name for x in local_device_protos if x.device_type == 'GPU']
+
+this_gpu = get_available_gpus().pop()
+print(this_gpu) # Should be i.e. /device:GPU:0
+assert this_gpu
+
 # %%
 
 import os
