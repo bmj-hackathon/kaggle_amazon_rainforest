@@ -11,6 +11,7 @@
 # <p><a href="https://github.com/oceanprotocol/mantaray">mantaray on Github</a></p>
 # <p>
 
+# -------------------
 
 # %% [markdown]
 # # Decentralized Data Science use case - Understanding the Amazon deforestation from Space challenge
@@ -34,7 +35,7 @@
 # - Various formatting and comments
 #
 # Below, the kernel;
-
+# -------------------
 # %% [markdown]
 #
 # Special thanks to the kernel contributors of this challenge (especially @anokas and @Kaggoo) who helped me find a starting point for this notebook.
@@ -72,8 +73,6 @@ logging.info("Logging started")
 
 # %% Paths
 from pathlib import Path
-PATH_DATA_ROOT = Path.cwd() / "data"
-assert PATH_DATA_ROOT.exists()
 
 # %%
 import warnings
@@ -140,9 +139,22 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping, Re
 # import vgg16
 # import data_helper
 
+# import data_helper
 from src.utils import vgg16
-from src.utils import data_helper
-from src.utils.data_helper import AmazonPreprocessor
+try:
+    from src.utils import vgg16
+    from src.utils import data_helper
+    from src.utils.data_helper import AmazonPreprocessor
+except:
+    path_utils = Path.cwd() / '../src/utils'
+    assert path_utils.exists()
+    sys.path.insert(0, str(path_utils.resolve()))
+    from utils import vgg16
+    from utils import data_helper
+    from utils.data_helper import AmazonPreprocessor
+# from src.utils import vgg16
+# from src.utils import data_helper
+# from src.utils.data_helper import AmazonPreprocessor
 # from kaggle_data.downloader import KaggleDataDownloader
 
 
@@ -183,6 +195,13 @@ PAPER = {
 #
 # ```
 
+# %%
+# The data path is relative to current path
+from pathlib import Path
+PATH_DATA_ROOT = Path.cwd() / "data"
+if not PATH_DATA_ROOT.exists():
+    PATH_DATA_ROOT = Path.cwd() / "../data"
+assert PATH_DATA_ROOT.exists()
 
 # %%
 data_root_folder = Path.cwd() / 'data'

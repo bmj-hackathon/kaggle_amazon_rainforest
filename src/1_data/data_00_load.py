@@ -27,6 +27,13 @@
 #
 # ```
 
+# %%
+# The data path is relative to current path
+from pathlib import Path
+PATH_DATA_ROOT = Path.cwd() / "data"
+if not PATH_DATA_ROOT.exists():
+    PATH_DATA_ROOT = Path.cwd() / "../data"
+assert PATH_DATA_ROOT.exists()
 
 # %%
 data_root_folder = Path.cwd() / 'data'
