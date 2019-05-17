@@ -1,8 +1,8 @@
 # %% [markdown]
 # ## Section 4: Define model
 # %%
-
-history = model.fit_generator(train_generator, steps, epochs=5, verbose=1,
+epochs = 3
+history = model.fit_generator(train_generator, steps, epochs=epochs, verbose=1,
                     validation_data=(X_val, y_val), callbacks=callbacks)
 
 # %%

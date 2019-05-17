@@ -263,6 +263,8 @@ images_title = [labels_df[labels_df['tags'].str.contains(label)].iloc[i]['image_
                 for i, label in enumerate(labels_set)]
 
 plt.rc('axes', grid=False)
+#cols = 3
+#rows = 3
 _, axs = plt.subplots(5, 4, sharex='col', sharey='row', figsize=(15, 20))
 axs = axs.ravel()
 
@@ -270,4 +272,167 @@ for i, (image_name, label) in enumerate(zip(images_title, labels_set)):
     img = mpimg.imread(train_jpeg_dir / image_name)
     axs[i].imshow(img)
     axs[i].set_title('{} - {}'.format(image_name, label))
+plt.show()# %% [markdown]
+# ## Section 3: Pre-process images
+
+# %% [markdown]
+
+# # Image resize & validation split
+# Define the dimensions of the image data trained by the network. Recommended resized images could be 32x32, 64x64, or 128x128 to speedup the training.
+#
+# You could also use `None` to use full sized images.
+#
+# Be careful, the higher the `validation_split_size` the more RAM you will consume.
+
+# %%
+
+img_resize = (128, 128) # The resize size of each image ex: (64, 64) or None to use the default image size
+validation_split_size = 0.2
+
+# %% [markdown]
+
+# # Data preprocessing
+# Due to the huge amount of memory the preprocessed images can take, we will create a dedicated `AmazonPreprocessor` class which job is to preprocess the data right in time at specific steps (training/inference) so that our RAM don't get completely filled by the preprocessed images.
+#
+# The only exception to this being the validation dataset as we need to use it as-is for f2 score calculation as well as when we calculate the validation accuracy of each batch.
+
+# %%
+
+preprocessor = AmazonPreprocessor(train_jpeg_dir, train_csv_file, test_jpeg_dir, test_jpeg_additional_dir,
+                                  img_resize, validation_split_size)
+preprocessor.init()
+
+# %%
+
+print("X_train/y_train length: {}/{}".format(len(preprocessor.X_train), len(preprocessor.y_train)))
+print("X_val/y_val length: {}/{}".format(len(preprocessor.X_val), len(preprocessor.y_val)))
+print("X_test/X_test_filename length: {}/{}".format(len(preprocessor.X_test), len(preprocessor.X_test_filename)))
+preprocessor.y_map
+# %% [markdown]
+# ## Section 4: Define model
+# Using Keras, a number of pre-trained models can be download automatically when instantiating a model. They are stored at ~/.keras/models/.
+#
+# Alternatively, get a pre-trained model from  Ocean Protocol, for example, VGG16 is stored at `did:op:9b8791e65b5440049a512a8815495591445919b265654bb3ad7e3b2bdcb4e2bc`
+
+# %%
+model = vgg16.create_model(img_dim=(128, 128, 3))
+model.summary()
+
+# %% [markdown]
+
+# ## Fine-tune conv layers
+# We will now finetune all layers in the VGG16 model.
+
+# %%
+
+history = History()
+callbacks = [history,
+             EarlyStopping(monitor='val_loss', patience=3, verbose=1, min_delta=1e-4),
+             ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=1, cooldown=0, min_lr=1e-7, verbose=1),
+             ModelCheckpoint(filepath='weights/weights.best.hdf5', verbose=1, save_best_only=True,
+                             save_weights_only=True, mode='auto')]
+
+X_train, y_train = preprocessor.X_train, preprocessor.y_train
+X_val, y_val = preprocessor.X_val, preprocessor.y_val
+
+batch_size = 32
+train_generator = preprocessor.get_train_generator(batch_size)
+steps = len(X_train) / batch_size
+
+
+model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics = ['accuracy'])# %% [markdown]
+# ## Section 4: Define model
+# %%
+epochs = 3
+history = model.fit_generator(train_generator, steps, epochs=epochs, verbose=1,
+                    validation_data=(X_val, y_val), callbacks=callbacks)
+
+# %%
+# ## Visualize Loss Curve
+
+# %%
+
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()# %% [markdown]
+# ## Section 5: Predict the targets
+#
+# %% [markdown]
+#
+# ## Load Best Weights from local
+#
+# Alternatively, a pre-trained model can be downloaded from Ocean Protocol. Or, you can publish your own trained model here.
+#
+
+# %%
+
+model.load_weights("weights/weights.best.hdf5")
+print("Weights loaded")
+
+# %% [markdown]
+
+# ## Check Fbeta Score
+
+# %%
+
+fbeta_score = vgg16.fbeta(model, X_val, y_val)
+
+fbeta_score
+
+# %% [markdown]
+
+# ## Make predictions
+
+# %%
+
+predictions, x_test_filename = vgg16.predict(model, preprocessor, batch_size=32)
+print("Predictions shape: {}\nFiles name shape: {}\n1st predictions ({}) entry:\n{}".format(predictions.shape,
+                                                                              x_test_filename.shape,
+                                                                              x_test_filename[0], predictions[0]))
+
+# %% [markdown]
+
+# Before mapping our predictions to their appropriate labels we need to figure out what threshold to take for each class
+
+# %%
+
+thresholds = [0.2] * len(labels_set)
+
+# %% [markdown]
+
+# Now lets map our predictions to their tags by using the thresholds
+
+# %%
+
+predicted_labels = vgg16.map_predictions(preprocessor, predictions, thresholds)
+
+# %% [markdown]
+
+# Finally lets assemble and visualize our predictions for the test dataset
+
+# %%
+
+tags_list = [None] * len(predicted_labels)
+for i, tags in enumerate(predicted_labels):
+    tags_list[i] = ' '.join(map(str, tags))
+
+final_data = [[filename.split(".")[0], tags] for filename, tags in zip(x_test_filename, tags_list)]
+
+# %%
+final_df = pd.DataFrame(final_data, columns=['image_name', 'tags'])
+print("Predictions rows:", final_df.size)
+final_df.head()
+
+# %%
+tags_s = pd.Series(list(chain.from_iterable(predicted_labels))).value_counts()
+fig, ax = plt.subplots(figsize=(16, 8))
+sns.barplot(x=tags_s, y=tags_s.index, orient='h')
 plt.show()
+
+# %% [markdown]
+
+# If there is a lot of `primary` and `clear` tags, this final dataset may be legit...

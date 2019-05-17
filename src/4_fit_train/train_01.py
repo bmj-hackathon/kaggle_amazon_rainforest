@@ -1,6 +1,12 @@
 # %% [markdown]
-
-# ## Load Best Weights
+# ## Section 5: Predict the targets
+#
+# %% [markdown]
+#
+# ## Load Best Weights from local
+#
+# Alternatively, a pre-trained model can be downloaded from Ocean Protocol. Or, you can publish your own trained model here.
+#
 
 # %%
 
@@ -23,7 +29,7 @@ fbeta_score
 
 # %%
 
-predictions, x_test_filename = vgg16.predict(model, preprocessor, batch_size=128)
+predictions, x_test_filename = vgg16.predict(model, preprocessor, batch_size=32)
 print("Predictions shape: {}\nFiles name shape: {}\n1st predictions ({}) entry:\n{}".format(predictions.shape,
                                                                               x_test_filename.shape,
                                                                               x_test_filename[0], predictions[0]))
@@ -57,16 +63,15 @@ for i, tags in enumerate(predicted_labels):
 final_data = [[filename.split(".")[0], tags] for filename, tags in zip(x_test_filename, tags_list)]
 
 # %%
-
 final_df = pd.DataFrame(final_data, columns=['image_name', 'tags'])
 print("Predictions rows:", final_df.size)
 final_df.head()
 
 # %%
-
 tags_s = pd.Series(list(chain.from_iterable(predicted_labels))).value_counts()
 fig, ax = plt.subplots(figsize=(16, 8))
-sns.barplot(x=tags_s, y=tags_s.index, orient='h');
+sns.barplot(x=tags_s, y=tags_s.index, orient='h')
+plt.show()
 
 # %% [markdown]
 
