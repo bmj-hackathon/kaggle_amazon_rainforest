@@ -6,6 +6,28 @@
 #
 # Optionally, download the data directly in your notebook environment:
 
+# %% [markdown]
+# ```python
+# import logging
+# import os
+# from squid_py import Metadata, Ocean
+# import squid_py
+# import mantaray_utilities as manta_utils
+#
+# # Setup logging
+# from mantaray_utilities.user import get_account_from_config
+# from mantaray_utilities.blockchain import subscribe_event
+# manta_utils.logging.logger.setLevel('INFO')
+# import mantaray_utilities as manta_utils
+# from squid_py import Config
+# from squid_py.keeper import Keeper
+# from pathlib import Path
+# import datetime
+# import web3
+#
+# ```
+
+
 # %%
 data_root_folder = Path.cwd() / 'data'
 assert data_root_folder.exists()
