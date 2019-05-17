@@ -1,3 +1,6 @@
+# %% [markdown]
+# ## Section 0: Prepare environment and libraries
+
 #%% ===========================================================================
 # Logging
 # =============================================================================
@@ -48,17 +51,18 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mplimg
 from matplotlib.pyplot import imshow
 import sklearn as sk
-
+import seaborn as sns
 import h5py
 
 logging.info("{:>10}=={} as {}".format('numpy', np.__version__, 'np'))
 logging.info("{:>10}=={} as {}".format('pandas', pd.__version__, 'pd'))
 logging.info("{:>10}=={} as {}".format('sklearn', sk.__version__, 'sk'))
-logging.info("{:>10}=={} as {}".format('matplotlib', mpl.__version__, 'mpl'))
+logging.info("{:>10}=={} as {}".format('seaborn', sns.__version__, 'sns'))
+
 
 # %%
+# Deep Learning
 assert "LD_LIBRARY_PATH" in os.environ
-assert "/usr/local/cuda-9.0/bin" in [p for p in os.environ['PATH'].split(':')]
 # Deep learning stack
 import tensorflow as tf
 import tensorflow.keras as ks
@@ -67,27 +71,12 @@ logging.info("{:>10}=={} as {}".format('keras', ks.__version__, 'ks'))
 
 # %%
 
-# import sys
-from pathlib import Path
-# PATH_UTILS_MODULE = Path.cwd() / 'src/utils'
-# PATH_UTILS_MODULE = Path.cwd() / 'src'
-# PATH_UTILS_MODULE.exists()
-# sys.path.append(PATH_UTILS_MODULE)
-# # sys.path.append('../tests')
-# for p in sys.path:
-#     print(p)
-# %% [markdown]
-
-# ## Import required modules
-
-# %%
-
 import os
 # import gc
 # import bcolz
 # import numpy as np
 import pandas as pd
-import seaborn as sns
+
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
