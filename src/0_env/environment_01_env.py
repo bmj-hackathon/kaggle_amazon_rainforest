@@ -65,19 +65,51 @@ import tensorflow.keras as ks
 logging.info("{:>10}=={} as {}".format('tensorflow', tf.__version__, 'tf'))
 logging.info("{:>10}=={} as {}".format('keras', ks.__version__, 'ks'))
 
-# from tensorflow.keras import layers
-# from tensorflow.keras.preprocessing import image
-# import
-# dir(tf.keras.applications)
-# from keras.applications.imagenet_utils import preprocess_input
-# tf.keras.applications.imagenet_utils
+# %%
 
-# from tensorflow.keras.layers import Input, Dense, Activation, BatchNormalization, Flatten, Conv2D
-# from tensorflow.keras.layers import AveragePooling2D, MaxPooling2D, Dropout
-# from tensorflow.keras.models import Model
-#
-# import tensorflow.keras.backend as K
-# from tensorflow.keras.models import Sequential
+# import sys
+from pathlib import Path
+# PATH_UTILS_MODULE = Path.cwd() / 'src/utils'
+# PATH_UTILS_MODULE = Path.cwd() / 'src'
+# PATH_UTILS_MODULE.exists()
+# sys.path.append(PATH_UTILS_MODULE)
+# # sys.path.append('../tests')
+# for p in sys.path:
+#     print(p)
+# %% [markdown]
+
+# ## Import required modules
+
+# %%
+
+import os
+# import gc
+# import bcolz
+# import numpy as np
+import pandas as pd
+import seaborn as sns
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from tensorflow.python.keras.optimizers import Adam
+# from keras.optimizers import Adam
+from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, History
+# from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, History
+# import vgg16
+# from utils import vgg16
+# from . import utils
+# from .. import utils
+# import .utils
+# from  .utils import vgg16
+# from utils import vgg16
+# import vgg16
+# import data_helper
+
+from src.utils import vgg16
+from src.utils import data_helper
+from src.utils.data_helper import AmazonPreprocessor
+# from kaggle_data.downloader import KaggleDataDownloader
+
 
 # %%
 def mm2inch(value):

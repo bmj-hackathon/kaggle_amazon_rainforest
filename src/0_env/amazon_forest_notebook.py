@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # %% [markdown]
 
 # # Planet: Understanding the Amazon deforestation from Space challenge
@@ -233,9 +231,10 @@ X_val, y_val = preprocessor.X_val, preprocessor.y_val
 batch_size = 64
 train_generator = preprocessor.get_train_generator(batch_size)
 steps = len(X_train) / batch_size
+epochs = 2
 
 model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics = ['accuracy'])
-history = model.fit_generator(train_generator, steps, epochs=25, verbose=1,
+history = model.fit_generator(train_generator, steps, epochs=5, verbose=1,
                     validation_data=(X_val, y_val), callbacks=callbacks)
 
 # %% [markdown]
