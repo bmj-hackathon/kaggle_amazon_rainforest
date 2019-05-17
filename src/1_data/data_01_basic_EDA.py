@@ -45,6 +45,8 @@ images_title = [labels_df[labels_df['tags'].str.contains(label)].iloc[i]['image_
                 for i, label in enumerate(labels_set)]
 
 plt.rc('axes', grid=False)
+#cols = 3
+#rows = 3
 _, axs = plt.subplots(5, 4, sharex='col', sharey='row', figsize=(15, 20))
 axs = axs.ravel()
 

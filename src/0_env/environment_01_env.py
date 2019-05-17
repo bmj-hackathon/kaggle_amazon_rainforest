@@ -27,19 +27,20 @@ logging.info("Logging started")
 # %% Paths
 from pathlib import Path
 
+# Move to the project directory if inside a subdirectory (JupyterLab)
+import os
+cwd = Path.cwd().parts
+if cwd[-1] == 'kernel_submission':
+    cwd = cwd[0:-1]
+    cwd = Path(*cwd)
+    os.chdir(cwd)
+    logging.info("Changed working directory to {}".format(cwd))
+
 # %%
 import warnings
 import gc
 warnings.simplefilter("ignore", category=DeprecationWarning)
 
-from pathlib import Path
-
-# %% Standard imports
-import os
-from pathlib import Path
-import functools
-import xml.etree.ElementTree as etree
-import xmltodict
 # %%
 # Scientific stack
 import numpy as np
@@ -99,7 +100,7 @@ try:
     from src.utils import data_helper
     from src.utils.data_helper import AmazonPreprocessor
 except:
-    path_utils = Path.cwd() / '../src/utils'
+    path_utils = Path.cwd() / '../src'
     assert path_utils.exists()
     sys.path.insert(0, str(path_utils.resolve()))
     from utils import vgg16
